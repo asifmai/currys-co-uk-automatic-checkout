@@ -1,4 +1,4 @@
-# Nike Bot
+# Curry.co.uk Bot
 
 ## Table of Contents
 
