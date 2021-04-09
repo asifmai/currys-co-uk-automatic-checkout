@@ -3,19 +3,18 @@ const keys = require('./keys');
 const selectors = require('./selectors');
 const moment = require('moment');
 
-let found = false;
 let running = false;
 
 const run = async () => {
   try {
-    await pupHelper.launchBrowser({ debug: true });
+    await pupHelper.launchBrowser();
 
     tryToFind();
     setInterval(async () => {
-      if (!found && !running) {
+      if (!running) {
         await tryToFind();
       }
-    }, 60000);
+    }, keys.refreshInterval);
   } catch (error) {
     await pupHelper.closeBrowser();
     return error;
@@ -43,7 +42,6 @@ const tryToFind = () =>
           if (!productDetails.includes('this item is out of stock')) {
             log('Found Product: ', productTitle);
             log('Checking out now...');
-            found = true;
             const productLink = await allProductsNodes[i].$eval(selectors.productLink, (elm) => elm.href);
             await checkout(productLink);
             log('Checkout Complete...');
